@@ -6,13 +6,26 @@ import Menu from './Menu';
 
 function App() {
   const [data, setData] = useState([]);
-  const numberBars: number = 40;
+  const numberBars: number = 50;
+  const spacing: number = 15;
   const styles: Styles = {
-    container: {
-      position: 'relative',
+    outerContainer: {
+      position: 'absolute',
       display: 'block',
-      height: '300px',
+      height: '200px',
       width: '100%',
+      left: '50%',
+      top: '50%',
+      transform: 'translate(-50%, -50%)',
+    },
+    innerContainer: {
+      position: 'absolute',
+      display: 'block',
+      height: '100%',
+      width: numberBars * spacing,
+      left: '50%',
+      top: '50%',
+      transform: 'translate(-50%, -50%)',
     },
   };
 
@@ -22,7 +35,11 @@ function App() {
   }, []);
 
   function getInitialAngle(index: number): number {
-    return (- Math.floor(numberBars / 2) + index) * 3;
+    return (- Math.floor(numberBars / 2) + index);
+  }
+
+  function getInitialPosition(index: number): number {
+    return index * spacing;
   }
 
   function getDataComponent(data: Bar[]): React.Component[] {
@@ -36,7 +53,7 @@ function App() {
   function generateNewData() {
     const newData: Bar[] = [];
     for (let index: number = 0; index < numberBars; index ++) {
-      newData.push(new Bar(getInitialAngle(index)));
+      newData.push(new Bar(getInitialAngle(index), getInitialPosition(index)));
     }
     setData(newData);
   }
@@ -44,8 +61,10 @@ function App() {
   return (
     <div>
       <Menu data={data} onChange={setData} ></Menu>
-      <div style={styles.container}>
-        {getDataComponent(data)}
+      <div style={styles.outerContainer}>
+        <div style={styles.innerContainer}>
+          {getDataComponent(data)}
+        </div>
       </div>
     </div>
   );

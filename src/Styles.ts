@@ -1,5 +1,8 @@
 interface Styles {
-    container?: any,
+    outerContainer?: any,
+    innerContainer?: any,
+    element1?: any,
+    element2?: any,
 };
 
 export default Styles;
