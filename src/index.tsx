@@ -1,37 +1,52 @@
 import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
+import Link from '@material-ui/core/Link';
+import Typography from '@material-ui/core/Typography';
 import Bar from './Bar';
 import Styles from './Styles';
-import Menu from './Menu';
+import Header from './Header';
 
 function App() {
-  const [data, setData] = useState([]);
-  const numberBars: number = 50;
+  const [data, setData] = useState<Bar[]>([]);
+  const [numberBars, setNumberBars] = useState<number>(50);
   const spacing: number = 15;
   const styles: Styles = {
-    outerContainer: {
-      position: 'absolute',
+    element1: {
+      boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)',
+      position: 'relative',
       display: 'block',
-      height: '200px',
+      margin: '20px',
+      height: '-webkit-fill-available',
+      width: '-webkit-fill-available',
+      borderRadius: '5px',
+    },
+    outerContainer: {
+      position: 'relative',
+      display: 'block',
+      height: '-webkit-fill-available',
       width: '100%',
-      left: '50%',
-      top: '50%',
-      transform: 'translate(-50%, -50%)',
+      margin: 'auto',
+      overflow: 'hidden',
     },
     innerContainer: {
       position: 'absolute',
       display: 'block',
-      height: '100%',
+      height: '500px',
       width: numberBars * spacing,
       left: '50%',
       top: '50%',
       transform: 'translate(-50%, -50%)',
     },
+    element2: {
+      position: 'absolute',
+      right: '10px',
+      bottom: '10px',
+    },
   };
 
   // equivalent to componentOnMount
   useEffect(() => {
-    generateNewData();
+    generateNewData(numberBars);
   }, []);
 
   function getInitialAngle(index: number): number {
@@ -50,22 +65,34 @@ function App() {
     return bars;
   }
 
-  function generateNewData() {
+  function generateNewData(newNumberBars: number) {
     const newData: Bar[] = [];
-    for (let index: number = 0; index < numberBars; index ++) {
+    for (let index: number = 0; index < newNumberBars; index ++) {
       newData.push(new Bar(getInitialAngle(index), getInitialPosition(index)));
     }
-    setData(newData);
+    setNumberBars(newNumberBars);
+    setData([...newData]);
   }
 
   return (
-    <div>
-      <Menu data={data} onChange={setData} ></Menu>
+    <div style={styles.element1}>
+      <Header
+        data={data}
+        setData={setData}
+        numberBars={numberBars}
+        setNumberBars={setNumberBars}
+        generateNewData={generateNewData}
+      />
       <div style={styles.outerContainer}>
         <div style={styles.innerContainer}>
           {getDataComponent(data)}
         </div>
       </div>
+      <Typography style={styles.element2}>
+        <Link href='https://bost.ocks.org/mike/algorithms/'>
+          Inspired by Mike Bostock
+        </Link>
+      </Typography>
     </div>
   );
 };
