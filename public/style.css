@@ -7,3 +7,9 @@ html, body, #root {
     height: 100%;
     width: 100%; 
 }
+
+#root {
+    margin: 20px;
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
+}

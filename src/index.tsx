@@ -5,9 +5,11 @@ import Typography from '@material-ui/core/Typography';
 import Bar from './Bar';
 import Header from './Header';
 import ColorScheme from './ColorScheme';
+import SideContent from './SideContent';
 
 type Styles = {
   appContainer: object,
+  contentContainer: object,
   outerContainer: object,
   innerContainer: object,
   linkShoutout: object,
@@ -15,32 +17,40 @@ type Styles = {
 
 function App() {
   const [data, setData] = useState<Bar[]>([]);
-  const [numberBars, setNumberBars] = useState<number>(50);
-  const [sleepTime, setSleepTime] = useState<number>(50);
+  const [numberBars, setNumberBars] = useState<number>(40);
+  const [sleepTime, setSleepTime] = useState<number>(10);
   const [selectedAlgorithm, setSelectedAlgorithm] = React.useState<number>(0);
   const spacing: number = 15;
   const styles: Styles = {
     appContainer: {
-      boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)',
       position: 'relative',
-      display: 'block',
-      margin: '20px',
-      height: '-webkit-fill-available',
+      display: 'flex',
+      flexFlow: 'column',
+      height: '100%',
       width: '-webkit-fill-available',
       borderRadius: '5px',
+      boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)',
     },
     outerContainer: {
+      display: 'flex',
+      flexFlow: 'row',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
       position: 'relative',
-      display: 'block',
-      height: '-webkit-fill-available',
+      height: '100%',
       width: '100%',
-      margin: 'auto',
+    },
+    contentContainer: {
+      position: 'relative',
+      display: 'flex',
+      flex: 'auto',
+      height: '100%',
       overflow: 'hidden',
     },
     innerContainer: {
       position: 'absolute',
       display: 'block',
-      height: '500px',
+      height: '400px',
       width: numberBars * spacing,
       left: '50%',
       top: '50%',
@@ -99,16 +109,19 @@ function App() {
         setSelectedAlgorithm={setSelectedAlgorithm}
       />
       <div style={styles.outerContainer}>
-        <div style={styles.innerContainer}>
-          {getDataComponent(data)}
+        <SideContent selectedAlgorithm={selectedAlgorithm}/>
+        <div style={styles.contentContainer}>
+          <div style={styles.innerContainer}>
+            {getDataComponent(data)}
+          </div>
+          <ColorScheme selectedAlgorithm={selectedAlgorithm}/>
         </div>
+        <Typography style={styles.linkShoutout} variant='subtitle2'>
+          <Link href='https://bost.ocks.org/mike/algorithms/'>
+            Inspired by Mike Bostock
+          </Link>
+        </Typography>
       </div>
-      <Typography style={styles.linkShoutout} variant='subtitle2'>
-        <Link href='https://bost.ocks.org/mike/algorithms/'>
-          Inspired by Mike Bostock
-        </Link>
-      </Typography>
-      <ColorScheme selectedAlgorithm={selectedAlgorithm} />
     </div>
   );
 };

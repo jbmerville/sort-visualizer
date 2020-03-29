@@ -55,7 +55,7 @@ function Header(props: Props) {
       borderTopRightRadius: '5px',
     },
     title: {
-      marginRight: '50px',
+      marginRight: '260px',
     },
     runButton: {
       marginRight: '50px',
