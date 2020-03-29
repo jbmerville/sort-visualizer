@@ -7,13 +7,40 @@ import Slider from '@material-ui/core/Slider';
 import List from '@material-ui/core/List';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import Styles from './Styles';
+// eslint-disable-next-line no-unused-vars
 import Bar from './Bar';
+import {bubbleSort, selectionSort} from './SortingAlgorithms';
 
-function Header(props) {
-  const {data, setData, numberBars, setNumberBars, generateNewData} = props;
+type Props = {
+  data: Bar[],
+  setData(data: Bar[]): void,
+  numberBars: number,
+  generateNewData(newValue: number): void,
+};
+
+type Styles = {
+  outerContainer: object,
+  title: object,
+  runButton: object,
+  sliderTitle: object,
+  slider: object,
+  algorithmsButton: object,
+  algorithmsMenu: object,
+}
+
+function Header(props: Props) {
+  const {data, setData, numberBars, generateNewData} = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [selectedAlgorithm, setSelectedAlgorithm] = React.useState<number>(0);
+  const options = [
+    ['Sorting Algorithms', bubbleSort],
+    ['Bubble Sort', bubbleSort],
+    ['Selection Sort', selectionSort],
+    ['Insertion Sort', bubbleSort],
+    ['Merge Sort', bubbleSort],
+    ['Quick Sort', bubbleSort],
+    ['Heap Sort', bubbleSort],
+  ];
   const styles: Styles = {
     outerContainer: {
       position: 'relative',
@@ -25,90 +52,88 @@ function Header(props) {
       borderTopLeftRadius: '5px',
       borderTopRightRadius: '5px',
     },
-    element1: {
+    title: {
       marginRight: '50px',
     },
-    element2: {
+    runButton: {
       marginRight: '50px',
     },
-    element3: {
+    sliderTitle: {
       position: 'relative',
       marginRight: '-35px',
       top: '-2px',
     },
-    element4: {
+    slider: {
       position: 'relative',
       width: '200px',
       marginRight: '50px',
       top: '12px',
       color: '#999',
     },
-    element5: {
+    algorithmsButton: {
       position: 'absolute',
       top: '5px',
       right: '20px',
       color: '#999',
       fontSize: '0.875rem',
     },
-    element6: {
+    algorithmsMenu: {
       top: '4px',
     },
   };
 
-  const options = [
-    'Sorting Algorithms',
-    'Bubble Sort',
-    'Selection Sort',
-    'Insertion Sort',
-    'Merge Sort',
-    'Quick Sort',
-    'Heap Sort',
-  ];
-
-  function shuffle() {
-    let j; let x; let i;
+  async function shuffle() {
+    let j; let temp; let i;
     for (i = data.length - 1; i > 0; i--) {
       j = Math.floor(Math.random() * (i + 1));
-      x = data[i].position;
+      temp = data[i].position;
       data[i].position = data[j].position;
-      data[j].position = x;
+      data[j].position = temp;
     }
-    setData([...data]);
+    // swap position in the screen (animation)
+    await setData(data);
+
+    // swap position in the data[]
+    data.sort((a, b) => (a.position > b.position) ? 1: -1);
+    await setData(data);
+
+    const algorithm = options[selectedAlgorithm][1] as (data: Bar[], setData: (data: Bar[]) => void ) => void;
+    algorithm(data, setData);
   }
 
-  function onNumberBarsChange(event: any, newValue: number | number[]) {
-    generateNewData(newValue);
+  function onNumberBarsChange(event: any, newValue: number | number[]): void {
+    generateNewData(newValue as number);
   }
 
-  const handleClickListItem = (event) => {
+  const handleClickListItem = (event): void => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
+  const handleMenuItemClick = (event, index): void => {
+    setSelectedAlgorithm(index);
     setAnchorEl(null);
   };
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     setAnchorEl(null);
   };
 
   return (
     <AppBar position="static" style={styles.outerContainer}>
       <Toolbar>
-        <Typography variant="h6" style={styles.element1}>
+        <Typography variant="h6" style={styles.title}>
             Sort Visualizer
         </Typography>
         <Button
           variant='contained'
-          style={styles.element2}
+          style={styles.runButton}
           onClick={shuffle}>Shuffle & Run!
         </Button>
-        <Typography style={styles.element3} variant='button' gutterBottom>
+        <Typography style={styles.sliderTitle} variant='button' gutterBottom>
             Size
         </Typography>
         <Slider
-          style={styles.element4}
+          style={styles.slider}
           value={numberBars}
           onChange={onNumberBarsChange}
           valueLabelDisplay="auto"
@@ -116,7 +141,7 @@ function Header(props) {
           min={5}
         />
         <List
-          style={styles.element5}
+          style={styles.algorithmsButton}
           component="nav"
           aria-label="Device settings"
         >
@@ -124,11 +149,11 @@ function Header(props) {
             variant='contained'
             onClick={handleClickListItem}
           >
-            {options[selectedIndex]}
+            {options[selectedAlgorithm][0] as string}
           </Button>
         </List>
         <Menu
-          style={styles.element6}
+          style={styles.algorithmsMenu}
           anchorEl={anchorEl}
           keepMounted
           open={Boolean(anchorEl)}
@@ -136,12 +161,12 @@ function Header(props) {
         >
           {options.map((option, index) => (
             <MenuItem
-              key={option}
+              key={option[0] as string}
               disabled={index === 0}
-              selected={index === selectedIndex}
+              selected={index === selectedAlgorithm}
               onClick={(event) => handleMenuItemClick(event, index)}
             >
-              {option}
+              {option[0] as string}
             </MenuItem>
           ))}
         </Menu>

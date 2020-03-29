@@ -1,18 +1,25 @@
 import React from 'react';
-import Styles from './Styles';
+
+type Styles = {
+  outerContainer: object,
+};
 
 class Bar {
-    angle: number;
-    hightlight: string;
     position: number;
+    angle: number;
+    highlightColor: string;
 
     constructor(angle: number, position: number) {
       this.angle = angle;
       this.position = position;
-      this.hightlight = 'black';
+      this.highlightColor = 'black';
     }
 
-    getComponent() {
+    highlight(color: string) {
+      this.highlightColor = color;
+    }
+
+    getComponent(speed: number) {
       const styles: Styles = {
         outerContainer: {
           position: 'absolute',
@@ -23,10 +30,10 @@ class Bar {
           borderRadius: '3px',
           marginRight: '10px',
           transformOrigin: 'bottom left',
-          background: this.hightlight,
+          background: this.highlightColor,
           transform: `rotate(${this.angle}deg)`,
           transition: 'linear',
-          transitionDuration: '0.3s',
+          transitionDuration: `${speed}ms`,
         },
       };
 

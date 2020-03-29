@@ -3,15 +3,22 @@ import ReactDOM from 'react-dom';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import Bar from './Bar';
-import Styles from './Styles';
 import Header from './Header';
+
+type Styles = {
+  appContainer: object,
+  outerContainer: object,
+  innerContainer: object,
+  linkShoutout: object,
+}
 
 function App() {
   const [data, setData] = useState<Bar[]>([]);
   const [numberBars, setNumberBars] = useState<number>(50);
+  const [sleepTime, setSleepTime] = useState<number>(50);
   const spacing: number = 15;
   const styles: Styles = {
-    element1: {
+    appContainer: {
       boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)',
       position: 'relative',
       display: 'block',
@@ -37,7 +44,7 @@ function App() {
       top: '50%',
       transform: 'translate(-50%, -50%)',
     },
-    element2: {
+    linkShoutout: {
       position: 'absolute',
       right: '10px',
       bottom: '10px',
@@ -60,7 +67,7 @@ function App() {
   function getDataComponent(data: Bar[]): React.Component[] {
     const bars: React.Component[] = [];
     for (const bar of data) {
-      bars.push(bar.getComponent());
+      bars.push(bar.getComponent(sleepTime));
     }
     return bars;
   }
@@ -74,13 +81,17 @@ function App() {
     setData([...newData]);
   }
 
+  function changeData(data: Bar[]) {
+    setData([...data]);
+    return new Promise((resolve) => setTimeout(resolve, sleepTime));
+  }
+
   return (
-    <div style={styles.element1}>
+    <div style={styles.appContainer}>
       <Header
         data={data}
-        setData={setData}
+        setData={changeData}
         numberBars={numberBars}
-        setNumberBars={setNumberBars}
         generateNewData={generateNewData}
       />
       <div style={styles.outerContainer}>
@@ -88,11 +99,12 @@ function App() {
           {getDataComponent(data)}
         </div>
       </div>
-      <Typography style={styles.element2}>
+      <Typography style={styles.linkShoutout} variant='subtitle2'>
         <Link href='https://bost.ocks.org/mike/algorithms/'>
           Inspired by Mike Bostock
         </Link>
       </Typography>
+
     </div>
   );
 };
