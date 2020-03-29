@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import Bar from './Bar';
 import {mark, swap, select, unselect} from './DataHelper';
+import Colors from './Colors';
 
 interface BarProps {
   bubbleSort: (data: Bar[], setData: (data: Bar[]) => void ) => void;
@@ -24,18 +25,18 @@ export async function selectionSort(data: Bar[], setData: (data: Bar[]) => void)
     let previous: number = i;
     for (let j: number = i; j < data.length; j ++) {
       if (data[j].angle < data[minimum].angle) {
-        await mark(data, setData, {[j as number]: '#0db641', [minimum as number]: 'black'});
+        await mark(data, setData, {[j as number]: Colors.green, [minimum as number]: Colors.black});
         minimum = j;
       } else {
         if (j === i) {
-          await mark(data, setData, {[j as number]: '#1084ff'});
+          await mark(data, setData, {[j as number]: Colors.lightBlue});
         } else {
-          await mark(data, setData, {[j as number]: '#1084ff', [previous as number]: 'black'});
+          await mark(data, setData, {[j as number]: Colors.lightBlue, [previous as number]: 'black'});
         }
         previous = j;
       }
     }
     await swap(data, setData, i, minimum);
-    await mark(data, setData, {[i as number]: 'black', [minimum as number]: 'black', [previous as number]: 'black'});
+    await mark(data, setData, {[i as number]: Colors.black, [minimum as number]: Colors.black, [previous as number]: Colors.black});
   }
 }

@@ -4,6 +4,7 @@ import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import Bar from './Bar';
 import Header from './Header';
+import ColorScheme from './ColorScheme';
 
 type Styles = {
   appContainer: object,
@@ -16,6 +17,7 @@ function App() {
   const [data, setData] = useState<Bar[]>([]);
   const [numberBars, setNumberBars] = useState<number>(50);
   const [sleepTime, setSleepTime] = useState<number>(50);
+  const [selectedAlgorithm, setSelectedAlgorithm] = React.useState<number>(0);
   const spacing: number = 15;
   const styles: Styles = {
     appContainer: {
@@ -93,6 +95,8 @@ function App() {
         setData={changeData}
         numberBars={numberBars}
         generateNewData={generateNewData}
+        selectedAlgorithm={selectedAlgorithm}
+        setSelectedAlgorithm={setSelectedAlgorithm}
       />
       <div style={styles.outerContainer}>
         <div style={styles.innerContainer}>
@@ -104,7 +108,7 @@ function App() {
           Inspired by Mike Bostock
         </Link>
       </Typography>
-
+      <ColorScheme selectedAlgorithm={selectedAlgorithm} />
     </div>
   );
 };

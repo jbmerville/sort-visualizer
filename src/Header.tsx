@@ -10,12 +10,15 @@ import Menu from '@material-ui/core/Menu';
 // eslint-disable-next-line no-unused-vars
 import Bar from './Bar';
 import {bubbleSort, selectionSort} from './SortingAlgorithms';
+import Colors from './Colors';
 
 type Props = {
   data: Bar[],
-  setData(data: Bar[]): void,
+  setData(data: Bar[]),
   numberBars: number,
-  generateNewData(newValue: number): void,
+  generateNewData: (newValue: number) => void,
+  selectedAlgorithm: number,
+  setSelectedAlgorithm: (selectedAlgorithm: number) => void,
 };
 
 type Styles = {
@@ -29,9 +32,8 @@ type Styles = {
 }
 
 function Header(props: Props) {
-  const {data, setData, numberBars, generateNewData} = props;
+  const {data, setData, numberBars, generateNewData, selectedAlgorithm, setSelectedAlgorithm} = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedAlgorithm, setSelectedAlgorithm] = React.useState<number>(0);
   const options = [
     ['Sorting Algorithms', bubbleSort],
     ['Bubble Sort', bubbleSort],
@@ -46,7 +48,7 @@ function Header(props: Props) {
       position: 'relative',
       display: 'block',
       width: '100%',
-      background: '#333',
+      background: Colors.primary,
       color: 'white',
       boxShadow: 'none',
       borderTopLeftRadius: '5px',
@@ -68,13 +70,13 @@ function Header(props: Props) {
       width: '200px',
       marginRight: '50px',
       top: '12px',
-      color: '#999',
+      color: Colors.secondary,
     },
     algorithmsButton: {
       position: 'absolute',
       top: '5px',
       right: '20px',
-      color: '#999',
+      color: '',
       fontSize: '0.875rem',
     },
     algorithmsMenu: {
