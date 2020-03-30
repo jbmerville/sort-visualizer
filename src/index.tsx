@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import ReactDOM from 'react-dom';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
@@ -21,6 +21,8 @@ function App() {
   const [sleepTime, setSleepTime] = useState<number>(100);
   const [selectedAlgorithm, setSelectedAlgorithm] = React.useState<number>(0);
   const spacing: number = 15;
+  const time = useRef(sleepTime);
+  time.current = sleepTime;
   const styles: Styles = {
     appContainer: {
       position: 'relative',
@@ -67,6 +69,9 @@ function App() {
   useEffect(() => {
     generateNewData(numberBars);
   }, []);
+  useEffect(() => {
+    time.current = sleepTime;
+  }, [sleepTime]);
 
   function getInitialAngle(index: number): number {
     return (- Math.floor(numberBars / 2) + index);
@@ -93,9 +98,10 @@ function App() {
     setData([...newData]);
   }
 
-  function changeData(data: Bar[]) {
+  async function changeData(data: Bar[]) {
     setData([...data]);
-    return new Promise((resolve) => setTimeout(resolve, sleepTime));
+    await new Promise((resolve) => setTimeout(resolve, time.current));
+    return;
   }
 
   return (
@@ -107,6 +113,8 @@ function App() {
         generateNewData={generateNewData}
         selectedAlgorithm={selectedAlgorithm}
         setSelectedAlgorithm={setSelectedAlgorithm}
+        sleepTime={sleepTime}
+        setSleepTime={setSleepTime}
       />
       <div style={styles.outerContainer}>
         <SideContent selectedAlgorithm={selectedAlgorithm}/>

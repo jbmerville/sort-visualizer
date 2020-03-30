@@ -140,11 +140,11 @@ function SideContent(props: Props) {
       bottomSection = pseudoCode(['for i from 1 to N', '\tfor j from 0 to N-1-i', '\t\tif array[j] > array[j+1]', '\t\t\tswap(array[j], array[j+1])']);
       break;
     case 2:
-      topSection = aboutAlgorithm('Selection Sort', ['N\u00B2', '1'], 'Each element is positioned in the array such that every element on it\' left are smaller.');
-      bottomSection = pseudoCode(['for i from 1 to N', '\tminimum = i', '\tfor j from i to N', '\t\tif array[j] < array[minimum]', '\t\t\tminimum = j', '\tswap(array[i], array[minimum])']);
+      topSection = aboutAlgorithm('Selection Sort', ['N\u00B2', '1'], 'Each element is positioned in the array such that every element on it\'s left are smaller.');
+      bottomSection = pseudoCode(['for i from 1 to N', '\tmin = i', '\tfor j from i to N', '\t\tif array[j] < array[min]', '\t\t\tmin = j', '\tswap(array[i], array[min])']);
       break;
     case 3:
-      topSection = aboutAlgorithm('Insertion Sort', ['N\u00B2', '1'], 'Each element is positioned in the array such that every element on it\' left are smaller.');
+      topSection = aboutAlgorithm('Insertion Sort', ['N\u00B2', '1'], 'Each element is positioned in the array such that every element on it\'s left are smaller.');
       bottomSection = pseudoCode(['for i from 1 to N', '\tkey = array[i]', '\tj = i - 1', '\twhile j >= 0 and array[j] > key', '\t\tarray[j+1] = array[j]', '\t\tj = j - 1', '\tarray[j+1] = key']);
       break;
     default:

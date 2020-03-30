@@ -32,7 +32,7 @@ class Bar {
           transformOrigin: 'bottom left',
           background: this.highlightColor,
           transform: `rotate(${this.angle}deg)`,
-          transition: 'linear',
+          transition: 'cubic-bezier(1, 0.01, 0.1, 1)',
           transitionDuration: `${speed}ms`,
         },
       };

@@ -26,14 +26,14 @@ export function select(data: Bar[], setData:(data: Bar[]) => void, index1: numbe
 export function unselect(data: Bar[], setData:(data: Bar[]) => void, index1: number, index2: number) {
   data[index1].highlight(Colors.black);
   data[index2].highlight(Colors.black);
-  setData(data);
+  return setData(data);
 }
 
 export async function swap(data: Bar[], setData:(data: Bar[]) => void, index1: number, index2: number) {
   const tempPosition = data[index1].position;
   data[index1].position = data[index2].position;
   data[index2].position = tempPosition;
-  setData(data);
+  await setData(data);
   const temp = data[index1];
   data[index1] = data[index2];
   data[index2] = temp;
