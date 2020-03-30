@@ -18,7 +18,7 @@ type Styles = {
 function App() {
   const [data, setData] = useState<Bar[]>([]);
   const [numberBars, setNumberBars] = useState<number>(40);
-  const [sleepTime, setSleepTime] = useState<number>(10);
+  const [sleepTime, setSleepTime] = useState<number>(100);
   const [selectedAlgorithm, setSelectedAlgorithm] = React.useState<number>(0);
   const spacing: number = 15;
   const styles: Styles = {
