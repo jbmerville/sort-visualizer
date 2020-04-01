@@ -53,20 +53,27 @@ const makeColor = (color: string, text: string) => {
   );
 };
 
-
 export default function ColorScheme(props: Props) {
   const {selectedAlgorithm} = props;
   const component: React.element[] = [];
-  if (selectedAlgorithm == 1) {
+  if (selectedAlgorithm === 1 || selectedAlgorithm === 3 || selectedAlgorithm === 4) {
     component.push(makeColor(Colors.green, 'sorted'));
-  } else if (selectedAlgorithm == 2) {
+  } else if (selectedAlgorithm === 2) {
     component.push(makeColor(Colors.green, 'minimum'));
+  } else if (selectedAlgorithm === 5) {
+    component.push(makeColor(Colors.green, '> pivot'));
   }
-  if (selectedAlgorithm == 1) {
+  if (selectedAlgorithm === 1 || selectedAlgorithm === 3 || selectedAlgorithm === 4) {
     component.push(makeColor(Colors.red, 'unsorted'));
+  } else if (selectedAlgorithm === 5) {
+    component.push(makeColor(Colors.red, '< pivot'));
   }
-  if (selectedAlgorithm == 2) {
+  if (selectedAlgorithm === 2) {
     component.push(makeColor(Colors.lightBlue, 'visiting'));
+  } else if (selectedAlgorithm === 3) {
+    component.push(makeColor(Colors.lightBlue, 'key'));
+  } else if (selectedAlgorithm === 5) {
+    component.push(makeColor(Colors.lightBlue, 'pivot'));
   }
   return (
     <div style={styles.outerContainer}>

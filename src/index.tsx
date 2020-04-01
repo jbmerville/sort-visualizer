@@ -98,9 +98,9 @@ function App() {
     setData([...newData]);
   }
 
-  async function changeData(data: Bar[]) {
+  async function changeData(data: Bar[], customeTime?: number) {
     setData([...data]);
-    await new Promise((resolve) => setTimeout(resolve, time.current));
+    await new Promise((resolve) => setTimeout(resolve, customeTime? customeTime: time.current));
     return;
   }
 

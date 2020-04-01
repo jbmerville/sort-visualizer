@@ -2,12 +2,27 @@
 import Bar from './Bar';
 import Colors from './Colors';
 
-export function mark(data: Bar[], setData:(data: Bar[]) => void, toMark: object) {
+export function mark(data: Bar[], setData:(data: Bar[], customeTime?: number) => void, toMark: object, customeTime?: number) {
   for (const index in toMark) {
     if (toMark.hasOwnProperty(index)) {
       const bar = data[index];
       bar.highlight(toMark[index]);
     }
+  }
+  if (customeTime) {
+    return setData(data, customeTime);
+  }
+  return setData(data);
+}
+
+export function markAll(data: Bar[], setData:(data: Bar[], customeTime?: number) => void, bounds: number[][], color: string, customeTime?: number) {
+  for (const bound of bounds) {
+    for (let i: number = bound[0]; i < bound[1]; i++) {
+      data[i].highlight(color);
+    }
+  }
+  if (customeTime) {
+    return setData(data, customeTime);
   }
   return setData(data);
 }
@@ -23,9 +38,12 @@ export function select(data: Bar[], setData:(data: Bar[]) => void, index1: numbe
   return setData(data);
 }
 
-export function unselect(data: Bar[], setData:(data: Bar[]) => void, index1: number, index2: number) {
+export function unselect(data: Bar[], setData:(data: Bar[], customeTime?: number) => void, index1: number, index2: number, customeTime?: number) {
   data[index1].highlight(Colors.black);
   data[index2].highlight(Colors.black);
+  if (customeTime) {
+    return setData(data, customeTime);
+  }
   return setData(data);
 }
 
@@ -37,7 +55,5 @@ export async function swap(data: Bar[], setData:(data: Bar[]) => void, index1: n
   const temp = data[index1];
   data[index1] = data[index2];
   data[index2] = temp;
-  data[index1].highlight(Colors.green);
-  data[index2].highlight(Colors.green);
   return setData(data);
 }

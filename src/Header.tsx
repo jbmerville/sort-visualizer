@@ -9,12 +9,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 // eslint-disable-next-line no-unused-vars
 import Bar from './Bar';
-import {bubbleSort, selectionSort} from './SortingAlgorithms';
+import {bubbleSort, selectionSort, insertionSort, mergeSort, quickSort} from './SortingAlgorithms';
 import Colors from './Colors';
 
 type Props = {
   data: Bar[],
-  setData(data: Bar[]),
+  setData: (data: Bar[], customeTime?: number) => void,
   numberBars: number,
   generateNewData: (newValue: number) => void,
   selectedAlgorithm: number,
@@ -38,9 +38,9 @@ const options = [
   ['Sorting Algorithms', bubbleSort],
   ['Bubble Sort', bubbleSort],
   ['Selection Sort', selectionSort],
-  ['Insertion Sort', bubbleSort],
-  ['Merge Sort', bubbleSort],
-  ['Quick Sort', bubbleSort],
+  ['Insertion Sort', insertionSort],
+  ['Merge Sort', mergeSort],
+  ['Quick Sort', quickSort],
   ['Heap Sort', bubbleSort],
 ];
 const speeds = [3000, 1500, 1000, 800, 500, 300, 200, 100, 30, 1];
@@ -112,7 +112,7 @@ function Header(props: Props) {
     data.sort((a, b) => (a.position > b.position) ? 1: -1);
     await setData(data);
 
-    const algorithm = options[selectedAlgorithm][1] as (data: Bar[], setData: (data: Bar[]) => void, setIsPlaying: (isPlaying: boolean) => void) => void;
+    const algorithm = options[selectedAlgorithm][1] as (data: Bar[], setData: (data: Bar[], customeTime?: number) => void, setIsPlaying: (isPlaying: boolean) => void) => void;
     algorithm(data, setData, setIsPlaying);
   }
 
