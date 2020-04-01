@@ -1,6 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Colors from './Colors';
+import SortingAlgorithms from './SortingAlgorithms';
 
 type Props = {
   selectedAlgorithm: number
@@ -21,24 +22,24 @@ type Styles = {
 const styles: Styles = {
   outerContainer: {
     position: 'relative',
-    display: 'flex',
+    display: 'inline-grid',
     minWidth: '400px',
-    flexDirection: 'row',
-    flexBasis: '400px',
     height: '100%',
     backgroundColor: Colors.lightGrey,
     borderBottomLeftRadius: '5px',
   },
   innerContainer: {
-    position: 'relative',
-    display: 'block',
+    position: 'absolute',
+    display: 'flex',
+    flexDirection: 'column',
     padding: '20px',
-    height: '100%',
-    width: '100%',
+    height: '-webkit-fill-available',
+    width: '-webkit-fill-available',
   },
   about: {
     position: 'relative',
     display: 'block',
+    flex: '1 1 auto',
   },
   complexity: {
     display: 'block',
@@ -47,9 +48,9 @@ const styles: Styles = {
   pseudoCodeOuterContainer: {
     display: 'block',
     position: 'relative',
-    height: 'fit-content',
-    width: '-webkit-fit-available',
+    height: 'auto',
     marginTop: '50px',
+    flex: '1 1 auto',
     borderRadius: '5px',
     overflow: 'hidden',
     color: Colors.grey,
@@ -62,9 +63,11 @@ const styles: Styles = {
     backgroundColor: Colors.lighterGrey,
   },
   pseudoCodeInnerContainer: {
-    display: 'block',
+    display: 'flex',
     position: 'relative',
-    maxHeight: '500px',
+    flexDirection: 'column',
+    height: '100%',
+    maxHeight: '100%',
     overflow: 'auto',
     padding: '10px',
     backgroundColor: Colors.evenLighterGrey,
@@ -72,6 +75,7 @@ const styles: Styles = {
     fontSize: '0.9em',
   },
   line: {
+    flex: '1',
     display: 'block',
     position: 'relative',
     height: 'fit-content',
@@ -130,26 +134,31 @@ function pseudoCode(code: string[]) {
   );
 }
 
+
 function SideContent(props: Props) {
   const {selectedAlgorithm} = props;
   let topSection: React.element = '';
   let bottomSection: React.element = '';
-  switch (selectedAlgorithm) {
-    case 1:
+  switch (SortingAlgorithms[selectedAlgorithm][0]) {
+    case 'Bubble Sort':
       topSection = aboutAlgorithm('Bubble Sort', ['N\u00B2', '1'], 'Each pair of adjacent elements is compared and the elements are swapped if they are not in order.');
       bottomSection = pseudoCode(['for i from 1 to N', '\tfor j from 0 to N-1-i', '\t\tif array[j] > array[j+1]', '\t\t\tswap(array[j], array[j+1])']);
       break;
-    case 2:
+    case 'Selection Sort':
       topSection = aboutAlgorithm('Selection Sort', ['N\u00B2', '1'], 'The smallest element in the unsorted array is moved at the end of a sorted array.');
       bottomSection = pseudoCode(['for i from 1 to N', '\tmin = i', '\tfor j from i to N', '\t\tif array[j] < array[min]', '\t\t\tmin = j', '\tswap(array[i], array[min])']);
       break;
-    case 3:
+    case 'Insertion Sort':
       topSection = aboutAlgorithm('Insertion Sort', ['NlogN', '1'], 'Each element is positioned in the array such that every element on it\'s left are smaller.');
       bottomSection = pseudoCode(['for i from 1 to N', '\tkey = array[i]', '\tj = i - 1', '\twhile j >= 0 and array[j] > key', '\t\tarray[j+1] = array[j]', '\t\tj = j - 1', '\tarray[j+1] = key']);
       break;
-    case 4:
-      topSection = aboutAlgorithm('Merge Sort', ['NlogN', 'N'], 'The list is broken into two smaller arrays of roughly the same size, and then use merge sort recursively on the subarrays.');
+    case 'Merge Sort':
+      topSection = aboutAlgorithm('Merge Sort', ['NlogN', 'N'], 'The array is broken into two smaller arrays of roughly the same size, and then use merge sort recursively on the subarrays.');
       bottomSection = pseudoCode(['func mergesort(array)', '\tif (n == 1) return array', '\tl1 = mergesort(array[0] ... array[n/2])', '\tl2 = mergesort(array[n/2+1] ... array[n])', '\treturn merge(l1, l2)', '', 'func merge(l1, l2)', '\tres = []', '\twhile (l1 and l2 have elements)', '\t\tif (l1[0] < l2[0])', '\t\t\tadd l1[0] to the end of res', '\t\t\tremove l1[0] from l1', '\t\telse', '\t\t\tadd l2[0] to the end of res', '\t\t\tremove l2[0] from l2', '\twhile (l1 has elements)', '\t\tadd l1[0] to the end of res', '\t\tremove l1[0] from l1', '\twhile (l2 has elements)', '\t\tadd l2[0] to the end of res', '\t\tremove l2[0] from l2', '\treturn res']);
+      break;
+    case 'Quick Sort':
+      topSection = aboutAlgorithm('Quick Sort', ['NlogN', 'N'], 'The array is partitioned into into two parts, then sorting the parts independently. Partioning is the key to this algorithm. Each element is compared against the pivot: a element picked at random. the elements are swapped such that the elements on the left of the pivot are smaller and the element on the right are larger.');
+      bottomSection = pseudoCode(['fun quicksort(array, left, right)', '\tif (left < right)', '\t\tpivot_index = partition(array, left, right)', '\t\tquicksort(array,left, pivot_index-1)', '\t\tquicksort(arry, pivot_index, right)', '', 'fun partition(array, left, right)', '\tpivot = array[right]', '\tleftwall = left - 1', '\tfor i = left to right', '\t\tif (array[i] < pivot) then', '\t\t\tleftwall = leftwall + 1', '\t\t\tswap(array[i], array[leftwall])', '\t\tswap(pivot, array[leftwall])', '\treturn leftwall']);
       break;
     default:
       break;

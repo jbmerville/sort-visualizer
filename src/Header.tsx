@@ -9,7 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 // eslint-disable-next-line no-unused-vars
 import Bar from './Bar';
-import {bubbleSort, selectionSort, insertionSort, mergeSort, quickSort} from './SortingAlgorithms';
+import SortingAlgorithms from './SortingAlgorithms';
 import Colors from './Colors';
 
 type Props = {
@@ -34,15 +34,6 @@ type Styles = {
   algorithmsMenu: object,
 }
 
-const options = [
-  ['Sorting Algorithms', bubbleSort],
-  ['Bubble Sort', bubbleSort],
-  ['Selection Sort', selectionSort],
-  ['Insertion Sort', insertionSort],
-  ['Merge Sort', mergeSort],
-  ['Quick Sort', quickSort],
-  ['Heap Sort', bubbleSort],
-];
 const speeds = [3000, 1500, 1000, 800, 500, 300, 200, 100, 30, 1];
 
 const styles: Styles = {
@@ -112,7 +103,7 @@ function Header(props: Props) {
     data.sort((a, b) => (a.position > b.position) ? 1: -1);
     await setData(data);
 
-    const algorithm = options[selectedAlgorithm][1] as (data: Bar[], setData: (data: Bar[], customeTime?: number) => void, setIsPlaying: (isPlaying: boolean) => void) => void;
+    const algorithm = SortingAlgorithms[selectedAlgorithm][1] as (data: Bar[], setData: (data: Bar[], customeTime?: number) => void, setIsPlaying: (isPlaying: boolean) => void) => void;
     algorithm(data, setData, setIsPlaying);
   }
 
@@ -194,7 +185,7 @@ function Header(props: Props) {
             onClick={handleClickListItem}
             disabled={isPlaying}
           >
-            {options[selectedAlgorithm][0] as string}
+            {SortingAlgorithms[selectedAlgorithm][0] as string}
           </Button>
         </List>
         <Menu
@@ -204,7 +195,7 @@ function Header(props: Props) {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          {options.map((option, index) => (
+          {SortingAlgorithms.map((option, index) => (
             <MenuItem
               key={option[0] as string}
               disabled={index === 0}

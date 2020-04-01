@@ -3,7 +3,7 @@ import Bar from './Bar';
 import {mark, swap, select, unselect, markAll} from './DataHelper';
 import Colors from './Colors';
 
-export async function bubbleSort(data: Bar[], setData: (data: Bar[], customeTime?: number) => void, setIsPlaying: (isPlaying: boolean) => void) {
+async function bubbleSort(data: Bar[], setData: (data: Bar[], customeTime?: number) => void, setIsPlaying: (isPlaying: boolean) => void) {
   setIsPlaying(true);
   for (let i = 0; i < data.length - 1; i ++) {
     for (let j = 0; j < data.length - i - 1; j ++) {
@@ -17,7 +17,7 @@ export async function bubbleSort(data: Bar[], setData: (data: Bar[], customeTime
   setIsPlaying(false);
 }
 
-export async function selectionSort(data: Bar[], setData: (data: Bar[]) => void, setIsPlaying: (isPlaying: boolean) => void) {
+async function selectionSort(data: Bar[], setData: (data: Bar[]) => void, setIsPlaying: (isPlaying: boolean) => void) {
   setIsPlaying(true);
   for (let i: number = 0; i < data.length - 1; i ++) {
     let minimum: number = i;
@@ -41,7 +41,7 @@ export async function selectionSort(data: Bar[], setData: (data: Bar[]) => void,
   setIsPlaying(false);
 }
 
-export async function insertionSort(data: Bar[], setData: (data: Bar[]) => void, setIsPlaying: (isPlaying: boolean) => void) {
+async function insertionSort(data: Bar[], setData: (data: Bar[]) => void, setIsPlaying: (isPlaying: boolean) => void) {
   setIsPlaying(true);
   for (let i: number = 1; i < data.length; i ++) {
     let j = i - 1;
@@ -62,7 +62,7 @@ export async function insertionSort(data: Bar[], setData: (data: Bar[]) => void,
   setIsPlaying(false);
 }
 
-export async function mergeSort(data: Bar[], setData: (data: Bar[]) => void, setIsPlaying: (isPlaying: boolean) => void) {
+async function mergeSort(data: Bar[], setData: (data: Bar[]) => void, setIsPlaying: (isPlaying: boolean) => void) {
   setIsPlaying(true);
   await mergeSortHelper(data, setData, 0, data.length - 1);
   setIsPlaying(false);
@@ -107,7 +107,7 @@ async function merge(data: Bar[], setData: (data: Bar[]) => void, left: number, 
   await markAll(data, setData, [[start, right+1]], Colors.black, 0);
 }
 
-export async function quickSort(data: Bar[], setData: (data: Bar[]) => void, setIsPlaying: (isPlaying: boolean) => void) {
+async function quickSort(data: Bar[], setData: (data: Bar[]) => void, setIsPlaying: (isPlaying: boolean) => void) {
   setIsPlaying(true);
   await quickSortHelper(data, setData, 0, data.length - 1);
   await markAll(data, setData, [[0, data.length]], Colors.black, 0);
@@ -142,3 +142,13 @@ async function partition(data: Bar[], setData: (data: Bar[]) => void, low: numbe
   await swap(data, setData, high, leftwall + 1);
   return leftwall + 1;
 }
+
+export default [
+  ['Sorting Algorithms', bubbleSort],
+  ['Bubble Sort', bubbleSort],
+  ['Selection Sort', selectionSort],
+  ['Insertion Sort', insertionSort],
+  ['Merge Sort', mergeSort],
+  ['Quick Sort', quickSort],
+  ['Heap Sort', bubbleSort],
+];

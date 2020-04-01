@@ -1,6 +1,7 @@
 import React from 'react';
 import Colors from './Colors';
 import Typography from '@material-ui/core/Typography';
+import SortingAlgorithms from './SortingAlgorithms';
 
 type Props = {
   selectedAlgorithm: number,
@@ -55,24 +56,25 @@ const makeColor = (color: string, text: string) => {
 
 export default function ColorScheme(props: Props) {
   const {selectedAlgorithm} = props;
+  const picked = SortingAlgorithms[selectedAlgorithm][0];
   const component: React.element[] = [];
-  if (selectedAlgorithm === 1 || selectedAlgorithm === 3 || selectedAlgorithm === 4) {
+  if (picked === 'Bubble Sort' || picked === 'Insertion Sort' || picked === 'Merge Sort') {
     component.push(makeColor(Colors.green, 'sorted'));
-  } else if (selectedAlgorithm === 2) {
+  } else if (picked === 'Selection Sort') {
     component.push(makeColor(Colors.green, 'minimum'));
-  } else if (selectedAlgorithm === 5) {
+  } else if (picked === 'Quick Sort') {
     component.push(makeColor(Colors.green, '> pivot'));
   }
-  if (selectedAlgorithm === 1 || selectedAlgorithm === 3 || selectedAlgorithm === 4) {
+  if (picked === 'Bubble Sort' || picked === 'Insertion Sort' || picked === 'Merge Sort') {
     component.push(makeColor(Colors.red, 'unsorted'));
-  } else if (selectedAlgorithm === 5) {
+  } else if (picked === 'Quick Sort') {
     component.push(makeColor(Colors.red, '< pivot'));
   }
-  if (selectedAlgorithm === 2) {
+  if (picked === 'Selection Sort') {
     component.push(makeColor(Colors.lightBlue, 'visiting'));
-  } else if (selectedAlgorithm === 3) {
+  } else if (picked === 'Insertion Sort') {
     component.push(makeColor(Colors.lightBlue, 'key'));
-  } else if (selectedAlgorithm === 5) {
+  } else if (picked === 'Quick Sort') {
     component.push(makeColor(Colors.lightBlue, 'pivot'));
   }
   return (
