@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -87,7 +87,8 @@ function Header(props: Props) {
   const {data, setData, numberBars, generateNewData, selectedAlgorithm, setSelectedAlgorithm, sleepTime, setSleepTime} = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [isPlaying, setIsPlaying] = React.useState<boolean>(false);
-
+  const playing = useRef(isPlaying);
+  playing.current = isPlaying;
   async function shuffle() {
     let j; let temp; let i;
     for (i = data.length - 1; i > 0; i--) {
@@ -103,8 +104,8 @@ function Header(props: Props) {
     data.sort((a, b) => (a.position > b.position) ? 1: -1);
     await setData(data);
 
-    const algorithm = SortingAlgorithms[selectedAlgorithm][1] as (data: Bar[], setData: (data: Bar[], customeTime?: number) => void, setIsPlaying: (isPlaying: boolean) => void) => void;
-    algorithm(data, setData, setIsPlaying);
+    const algorithm = SortingAlgorithms[selectedAlgorithm][1] as (data: Bar[], setData: (data: Bar[], customeTime?: number) => void, setIsPlaying: (isPlaying: boolean) => void, playing) => void;
+    algorithm(data, setData, setIsPlaying, playing);
   }
 
   function onNumberBarsChange(event: any, newValue: number | number[]): void {
@@ -132,6 +133,10 @@ function Header(props: Props) {
     setAnchorEl(null);
   };
 
+  const onPauseClicked = (): void => {
+    setIsPlaying(false);
+  };
+
   return (
     <AppBar position="static" style={styles.outerContainer}>
       <Toolbar>
@@ -142,9 +147,17 @@ function Header(props: Props) {
           variant='contained'
           style={styles.runButton}
           onClick={shuffle}
-          disabled={isPlaying}
+          disabled={isPlaying || selectedAlgorithm == 0}
         >
         Shuffle & Run!
+        </Button>
+        <Button
+          variant='contained'
+          style={styles.runButton}
+          onClick={onPauseClicked}
+          disabled={!isPlaying}
+        >
+        Stop
         </Button>
         <div style={{...styles.sliderContainer, opacity: isPlaying? '0.2': '1'}}>
           <Typography style={styles.sliderTitle} variant='button' gutterBottom>

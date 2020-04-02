@@ -65,7 +65,7 @@ export default function ColorScheme(props: Props) {
   } else if (picked === 'Quick Sort') {
     component.push(makeColor(Colors.green, '> pivot'));
   }
-  if (picked === 'Bubble Sort' || picked === 'Insertion Sort' || picked === 'Merge Sort') {
+  if (picked === 'Bubble Sort' || picked === 'Insertion Sort' || picked === 'Merge Sort' || picked === 'Heap Sort') {
     component.push(makeColor(Colors.red, 'unsorted'));
   } else if (picked === 'Quick Sort') {
     component.push(makeColor(Colors.red, '< pivot'));

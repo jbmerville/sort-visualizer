@@ -6,6 +6,7 @@ import Bar from './Bar';
 import Header from './Header';
 import ColorScheme from './ColorScheme';
 import SideContent from './SideContent';
+import {getInitialAngle, getInitialPosition} from './DataHelper';
 
 type Styles = {
   appContainer: object,
@@ -13,14 +14,15 @@ type Styles = {
   outerContainer: object,
   innerContainer: object,
   linkShoutout: object,
-}
+};
+
+export const spacing: number = 15;
 
 function App() {
   const [data, setData] = useState<Bar[]>([]);
   const [numberBars, setNumberBars] = useState<number>(40);
   const [sleepTime, setSleepTime] = useState<number>(100);
   const [selectedAlgorithm, setSelectedAlgorithm] = React.useState<number>(0);
-  const spacing: number = 15;
   const time = useRef(sleepTime);
   time.current = sleepTime;
   const styles: Styles = {
@@ -73,13 +75,6 @@ function App() {
     time.current = sleepTime;
   }, [sleepTime]);
 
-  function getInitialAngle(index: number): number {
-    return (- Math.floor(numberBars / 2) + index);
-  }
-
-  function getInitialPosition(index: number): number {
-    return index * spacing;
-  }
 
   function getDataComponent(data: Bar[]): React.Component[] {
     const bars: React.Component[] = [];
@@ -92,7 +87,7 @@ function App() {
   function generateNewData(newNumberBars: number) {
     const newData: Bar[] = [];
     for (let index: number = 0; index < newNumberBars; index ++) {
-      newData.push(new Bar(getInitialAngle(index), getInitialPosition(index)));
+      newData.push(new Bar(getInitialAngle(newNumberBars, index), getInitialPosition(index)));
     }
     setNumberBars(newNumberBars);
     setData([...newData]);
@@ -101,7 +96,6 @@ function App() {
   async function changeData(data: Bar[], customeTime?: number) {
     setData([...data]);
     await new Promise((resolve) => setTimeout(resolve, customeTime? customeTime: time.current));
-    return;
   }
 
   return (
